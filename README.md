@@ -9,86 +9,55 @@ Marco Antonio Gómez — Juan Pablo Pedraza — Carlos Manuel Guevara
 
 ##  Descripción General
 
-Este laboratorio tuvo como objetivo **configurar un switch Cisco** para establecer la comunicación entre distintos dispositivos (PC, Raspberry Pi y otros hosts), implementando una **VLAN** y validando la conectividad mediante herramientas como `ping` y `nmap`.
+En este laboratorio se realizó la **configuración de un switch Cisco** para permitir la comunicación entre diferentes dispositivos conectados en red (como una PC y una Raspberry Pi).  
+El objetivo principal fue implementar una **VLAN (Red de Área Local Virtual)**, asignar direcciones IP a cada dispositivo y verificar la conectividad mediante pruebas de red.
 
 ---
 
 ##  Configuración del Switch
 
-1. **Acceso al modo privilegiado y de configuración global:**
-   ```bash
-   enable
-   configure terminal
-   ```
-2. **Cambio de nombre del dispositivo:**
-   ```bash
-   hostname Gatitos
-   ```
-3. **Creación y configuración de la VLAN 10:**
-   ```bash
-   vlan 10
-   name Marco
-   interface vlan 10
-   ip address 192.168.10.1 255.255.255.0
-   no shutdown
-   ```
-4. **Asignación de puertos a la VLAN 10:**
-   ```bash
-   interface range fa0/1 - 10
-   switchport mode access
-   switchport access vlan 10
-   ```
-5. **Verificación y guardado:**
-   ```bash
-   show vlan brief
-   show ip interface brief
-   write memory
-   ```
+Primero, se accedió al **modo privilegiado** y luego al **modo de configuración global** del switch.  
+Se cambió el nombre del dispositivo a *“Gatitos”* para identificarlo fácilmente dentro de la red.
+
+Posteriormente, se **creó la VLAN 10**, asignándole el nombre *“Marco”*.  
+A esta VLAN se le configuró una **dirección IP** correspondiente al segmento 192.168.10.0/24, y se activó su interfaz virtual para que pudiera funcionar como **puerta de enlace** (gateway) de los dispositivos conectados.
+
+Después, se seleccionó el rango de **puertos físicos** del switch (del 0/1 al 0/10), configurándolos como **puertos de acceso** y asignándolos a la VLAN 10.  
+Finalmente, se guardaron los cambios y se verificó el estado de las interfaces y las VLAN activas para confirmar que la configuración fue exitosa.
 
 ---
 
 ##  Conexión de Dispositivos
 
-- **Configuración en Ubuntu / Raspberry Pi:**
-  - IP asignada: `192.168.10.2`
-  - Comprobación con `ip a` mostró conectividad activa vía cable Ethernet.
+Se conectaron una **PC (Ubuntu)** y una **Raspberry Pi** al switch, asignándoles direcciones IP dentro de la misma subred (por ejemplo, 192.168.10.2).  
+Se comprobó la conectividad de red observando que la interfaz Ethernet estaba activa y enlazada correctamente con el switch.
 
-- **Prueba de conectividad:**
-  ```bash
-  ping 192.168.10.1
-  ```
-  Resultado: 100% de éxito, tiempos promedio de 4 ms.
+Mediante una prueba de *ping* hacia la dirección del switch (192.168.10.1), se confirmó la comunicación exitosa, con una tasa de respuesta del 100% y tiempos de transmisión promedio de 4 ms.  
+Esto demostró que tanto la VLAN como la conexión física estaban correctamente configuradas.
 
 ---
 
 ##  Pruebas de Red
 
-- **Escaneo con Nmap al switch (192.168.10.1):**
-  - Puertos abiertos: `22 (SSH)`, `23 (Telnet)`, `80 (HTTP)`, `443 (HTTPS)`.
+Se realizaron pruebas de exploración de red con **Nmap** para analizar los servicios activos y la apertura de puertos:
 
-- **Escaneo a otro host (192.168.10.3):**
-  - Solo puerto `22/tcp` abierto (SSH habilitado).
+- En el **switch**, se detectaron los servicios SSH, Telnet, HTTP y HTTPS disponibles.  
+- En otro dispositivo dentro de la red, solo se encontró abierto el puerto SSH, lo cual indica que el equipo estaba configurado para administración remota segura.
 
-- **Comprobación de interfaces activas en el switch:**
-  ```bash
-  show ip interface brief
-  ```
-  Interfaces `Vlan1` y `Vlan10` activas.
+Además, se verificó que las **interfaces VLAN1 y VLAN10** del switch estuvieran activas, mientras que la mayoría de las interfaces físicas no estaban en uso.
 
 ---
 
-##  Configuración SSH
+##  Configuración del Servicio SSH
 
-- Se instaló y habilitó el servicio SSH en Ubuntu.  
-- Se verificó la conexión remota exitosa mediante intercambio de claves y autenticación.  
-- Se transfirió un archivo entre equipos usando `scp`.
+Se instaló y configuró correctamente el servicio **SSH** en el sistema Ubuntu, permitiendo el acceso remoto seguro desde otros dispositivos de la red.  
+Durante las pruebas se aceptó la huella digital del host remoto, se autenticó la conexión con contraseña y se realizó exitosamente una **transferencia de archivos** mediante un canal seguro.
 
 ---
 
-## Resultados
+##  Resultados Obtenidos
 
-- Se estableció comunicación entre PC, Raspberry y switch.  
-- VLAN 10 configurada correctamente.  
-- Conectividad validada con `ping` y `nmap`.  
-- Acceso remoto mediante SSH operativo.  
-
+- El switch Cisco fue configurado correctamente con una VLAN funcional.  
+- Se logró establecer comunicación entre los dispositivos conectados.  
+- Las pruebas de conectividad y exploración confirmaron el buen funcionamiento de la red.  
+- El acceso remoto mediante SSH operó sin errores. 
