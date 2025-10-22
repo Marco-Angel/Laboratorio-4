@@ -1,10 +1,5 @@
 # Laboratorio-4
 Red y Máquinas Virtuales
---
-**Autores:**  
-Marco Antonio Gómez — Juan Pablo Pedraza — Carlos Manuel Guevara  
-**Fecha:** 21 de octubre de 2025
-
 ---
 
 ##  Descripción General
